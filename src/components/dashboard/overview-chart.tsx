@@ -74,22 +74,24 @@ export function OverviewChart({ data }: { data: ClassData[] }) {
 
   const isSummary = filter === "all"
 
-  // Logika lebar dinamis agar mengisi kekosongan jika data sedikit
+  /**
+   * LOGIKA LEBAR DINAMIS
+   * Jika Summary (hanya 3 bar), gunakan 100%.
+   * Jika detail kelas, beri ruang minimal 70px per grup bar.
+   * Scroll akan muncul otomatis jika total lebar melebihi kontainer.
+   */
   const chartWidth = useMemo(() => {
-    if (isSummary || processedData.length <= 5) return "100%"
-    return processedData.length * 85 
+    if (isSummary) return "100%"
+    const minWidthNeeded = processedData.length * 70
+    return minWidthNeeded > 500 ? `${minWidthNeeded}px` : "100%"
   }, [processedData.length, isSummary])
 
-  const barSize = useMemo(() => {
-    if (isSummary) return 40
-    if (processedData.length <= 5) return 26
-    return 18 
-  }, [processedData.length, isSummary])
+  // Bar size dibuat lebih konsisten agar enak dilihat saat di-scroll
+  const barSize = isSummary ? 40 : 20
 
   return (
     <Card className="col-span-4 bg-[#151419] border-white/5 text-white shadow-none outline-none ring-0 font-inter overflow-hidden">
       
-      {/* HEADER PREMIUM */}
       <CardHeader className="flex flex-row items-center justify-between py-0 px-5 border-white/5 space-y-0">
         <div className="flex flex-col gap-0">
           <CardTitle className="text-base font-bold text-white/90">
@@ -102,7 +104,6 @@ export function OverviewChart({ data }: { data: ClassData[] }) {
 
         <div className="flex items-center gap-2">
           {isSummary ? (
-            /* TOMBOL FILTER AWAL (Dropdown) */
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-2 h-7 px-3 rounded-lg bg-white/5 border border-white/10 text-[10px] font-plus-jakarta font-semibold text-white/70 hover:bg-white/10 hover:text-white transition-all outline-none focus:ring-0">
                 <Filter size={12} className="opacity-70" />
@@ -116,7 +117,6 @@ export function OverviewChart({ data }: { data: ClassData[] }) {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            /* ACTIVE FILTER CHIP (Gaya Laravel Premium) */
             <div className="flex items-center gap-2 h-7 pl-3 pr-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 animate-in fade-in zoom-in duration-300">
               <span className="text-[10px] font-bold font-plus-jakarta text-emerald-400 uppercase tracking-tight">
                 Kelas {filter}
@@ -133,10 +133,15 @@ export function OverviewChart({ data }: { data: ClassData[] }) {
       </CardHeader>
 
       <CardContent className="p-0">
-        <ScrollArea className="w-full">
+        {/* ScrollArea diatur agar tidak bisa scroll vertikal (overflow-y-hidden) */}
+        <ScrollArea className="w-full whitespace-nowrap overflow-y-hidden">
           <div
             className="px-4 pt-6"
-            style={{ width: chartWidth, height: 200 }}
+            style={{ 
+              width: chartWidth, 
+              height: "220px", // Tinggi fix agar tidak ada scroll vertikal
+              minWidth: "100%" 
+            }}
           >
             <ChartContainer id="attendance-overview" config={chartConfig} className="h-full w-full">
               <BarChart data={processedData} barGap={4}>
@@ -191,13 +196,9 @@ export function OverviewChart({ data }: { data: ClassData[] }) {
               </BarChart>
             </ChartContainer>
           </div>
-
-          {!isSummary && processedData.length > 5 && (
-            <ScrollBar
-              orientation="horizontal"
-              className="h-1.5 mx-8 mb-2 rounded-full bg-white/5"
-            />
-          )}
+          
+          {/* ScrollBar hanya untuk horizontal */}
+          <ScrollBar orientation="horizontal" className="h-2 bg-white/5" />
         </ScrollArea>
       </CardContent>
     </Card>

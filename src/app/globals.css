@@ -108,6 +108,13 @@
   100% { left: 200%; }
 }
 
+/* Pastikan scroll area tidak melebihi viewport di mobile */
+@media (max-width: 768px) {
+  .dashboard-responsive {
+    max-height: calc(100vh - 200px) !important;
+  }
+}
+
 /* --- LOGIKA WARNA (THE MAGIC FIX) --- */
 
 /* LOGIKA BARU: 
@@ -214,16 +221,18 @@
   }
   
   /* KUNCI UTAMA ANTI-WHITE-FLASH:
-     Kita paksa html & body berwarna hitam secara hardcode CSS.
-     Ini berjalan sebelum variabel Tailwind dimuat.
+     Kita menggunakan @apply agar sinkron dengan variabel tema, 
+     namun tetap didefinisikan di level html/body untuk mencegah flash putih.
   */
   html, body {
-    background-color: #000000 !important;
-    color: #ffffff;
+    @apply bg-background text-foreground;
+    /* Atau jika ingin benar-benar hardcode tanpa !important: */
+    /* background-color: #000000; */
+    /* color: #ffffff; */
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply antialiased;
     overflow-x: hidden;
   }
 }
