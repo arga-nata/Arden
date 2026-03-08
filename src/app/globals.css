@@ -11,7 +11,7 @@
   */
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
 
-  /* 2. CUSTOM FONTS 
+  /* 2. CUSTOM FONTS
      Class pemanggil sesuai nama variabel di sebelah kiri:
      --font-inter      -> class="font-inter"
      --font-jakarta    -> class="font-jakarta"
@@ -22,7 +22,7 @@
   --font-jakarta: var(--font-jakarta), ui-sans-serif, system-ui;
   --font-space: var(--font-space), ui-sans-serif, system-ui;
   --font-montserrat: var(--font-montserrat), ui-sans-serif, system-ui;
-  
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
