@@ -7,7 +7,7 @@ import {
   FileClock, 
   AlertTriangle 
 } from "lucide-react"
-import { StatCard } from "@/components/dashboard/stat-card"
+import { StatCard } from "@/components/dashboard/home/stat-card"
 
 // Update Interface agar menerima object { value, trend }
 interface StatItem {

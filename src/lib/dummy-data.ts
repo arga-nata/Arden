@@ -1,5 +1,5 @@
 // src/lib/dummy-data.ts
-import { ClassData } from "@/components/dashboard/overview-chart"
+import { ClassData } from "@/components/dashboard/home/overview-chart"
 
 // 1. DATA KARTU STATISTIK
 export const statsData = {

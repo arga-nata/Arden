@@ -1,12 +1,27 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* --- KONFIGURASI TEMA & FONT --- */
+/* =========================================
+   1. TAILWIND THEME CONFIGURATION
+   ========================================= */
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-space: var(--font-space-grotesk), ui-sans-serif, system-ui;
+  /* 1. DEFAULT FONT (font-sans)
+     Otomatis mengarah ke variabel --font-geist yang di-inject di layout.tsx
+     Class pemanggil: font-sans (atau tanpa class, karena default)
+  */
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+
+  /* 2. CUSTOM FONTS 
+     Class pemanggil sesuai nama variabel di sebelah kiri:
+     --font-inter      -> class="font-inter"
+     --font-jakarta    -> class="font-jakarta"
+     --font-space      -> class="font-space"
+     --font-montserrat -> class="font-montserrat"
+  */
+  --font-inter: var(--font-inter), ui-sans-serif, system-ui;
+  --font-jakarta: var(--font-jakarta), ui-sans-serif, system-ui;
+  --font-space: var(--font-space), ui-sans-serif, system-ui;
   --font-montserrat: var(--font-montserrat), ui-sans-serif, system-ui;
-  --font-jakarta: var(--font-plus-jakarta), ui-sans-serif, system-ui;
   
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -16,14 +31,14 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* Mapping Warna Baru untuk Cycle Quality Chart */
+  /* Cycle Quality Colors */
   --color-minimal: var(--minimal);
   --color-standard: var(--standard);
   --color-maximal: var(--maximal);
   --color-over: var(--over);
   --color-sholat: var(--sholat);
   
-  /* Mapping Warna Dashboard ke Tailwind */
+  /* Dashboard & UI Colors */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -54,16 +69,18 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   
-  /* Warna Custom Mobile/Legacy */
+  /* Custom Mobile Colors */
   --color-mobile-bg: var(--mobile-bg);
   --color-mobile-card: var(--mobile-card);
   --color-mobile-surface: var(--mobile-surface);
   --color-mobile-border: var(--mobile-border);
   --color-mobile-muted: var(--mobile-muted);
-
 }
 
-/* --- ANIMASI & UTILITIES --- */
+
+/* =========================================
+   2. UTILITIES & ANIMATIONS
+   ========================================= */
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -73,6 +90,7 @@
     scrollbar-width: none;
   }
 
+  /* Sidebar Shine Effect */
   .sidebar-shine {
     position: relative;
     overflow: hidden;
@@ -96,9 +114,10 @@
     pointer-events: none;
   }
 
-  /* Efek jalan saat hover atau active */
+  /* Trigger Animation: Hover, Data-Active, or Data-State=Active */
   .sidebar-shine:hover::before,
-  .sidebar-shine[data-active="true"]::before {
+  .sidebar-shine[data-active="true"]::before,
+  .sidebar-shine[data-state="active"]::before {
     animation: shine-anim 1.5s infinite;
   }
 }
@@ -108,25 +127,16 @@
   100% { left: 200%; }
 }
 
-/* Pastikan scroll area tidak melebihi viewport di mobile */
-@media (max-width: 768px) {
-  .dashboard-responsive {
-    max-height: calc(100vh - 200px) !important;
-  }
-}
 
-/* --- LOGIKA WARNA (THE MAGIC FIX) --- */
-
-/* LOGIKA BARU: 
-   :root sekarang berisi warna DARK MODE secara default.
-   Ini mencegah 'White Flash' karena browser langsung memuat warna gelap.
-*/
+/* =========================================
+   3. CSS VARIABLES (THEME)
+   ========================================= */
 :root {
   --radius: 0.625rem;
 
-  /* DEFAULT: DARK MODE VALUES (Dipindah dari .dark) */
-  --background: oklch(0.145 0 0);          /* Hitam (Background Utama) */
-  --foreground: oklch(0.985 0 0);          /* Putih (Teks Utama) */
+  /* --- DARK MODE (Default) --- */
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
@@ -140,46 +150,47 @@
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);            /* Border tipis transparan */
+  --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --logo-bg: oklch(0.985 0 0);  /* Background Kotak (Misal: Putih) */
-  --logo-fg: oklch(24.354% 0.00003 271.152);  /* Warna Icon/Huruf (Misal: Hitam) */
   
-  /* Charts & Sidebar (Dark) */
+  /* Custom Logos */
+  --logo-bg: oklch(0.985 0 0);
+  --logo-fg: oklch(24.354% 0.00003 271.152);
+  
+  /* Charts */
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
+
+  /* Sidebar */
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(70.826% 0.00346 15.958);            /* Putih Bersih */
-  --sidebar-primary-foreground: oklch(91.279% 0.0001 271.152); /* Hitam Pekat */
+  --sidebar-primary: oklch(70.826% 0.00346 15.958);
+  --sidebar-primary-foreground: oklch(91.279% 0.0001 271.152);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 
-  /* Mobile Colors (Selalu Gelap) */
+  /* Mobile */
   --mobile-bg: #060610;
   --mobile-card: #151419;
   --mobile-surface: #27272A;
   --mobile-border: #3F3F3F;
   --mobile-muted: #B3B3B3;
 
-  /* WARNA KHUSUS CYCLE QUALITY (OKLCH Version) */
+  /* Cycle Quality */
   --minimal: oklch(0.707 0.165 254.624);
   --standard: oklch(0.633 0.188 163.653);
   --maximal: oklch(0.769 0.188 70.08);
   --over: oklch(0.627 0.194 27.392);
-  --sholat: oklch(0.25 0 0); /* Abu-abu Gelap */
+  --sholat: oklch(0.25 0 0);
 }
 
-/* OPSIONAL: LIGHT MODE
-   Jika suatu saat kamu butuh light mode, panggil class "light".
-   (Ini adalah nilai default lama kamu)
-*/
+/* --- LIGHT MODE OVERRIDES --- */
 .light {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -214,21 +225,17 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* --- BASE STYLES --- */
+
+/* =========================================
+   4. BASE STYLES
+   ========================================= */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   
-  /* KUNCI UTAMA ANTI-WHITE-FLASH:
-     Kita menggunakan @apply agar sinkron dengan variabel tema, 
-     namun tetap didefinisikan di level html/body untuk mencegah flash putih.
-  */
   html, body {
     @apply bg-background text-foreground;
-    /* Atau jika ingin benar-benar hardcode tanpa !important: */
-    /* background-color: #000000; */
-    /* color: #ffffff; */
   }
 
   body {
@@ -237,16 +244,21 @@
   }
 }
 
+
+/* =========================================
+   5. GLOBAL SCROLLBAR
+   ========================================= */
+
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a; /* Warna abu gelap */
-  border-radius: 4px;
+  background: #27272a;
+  border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;

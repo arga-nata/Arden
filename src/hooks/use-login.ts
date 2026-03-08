@@ -1,8 +1,5 @@
-import { ApiResponse, LoginData } from '@/types/api';
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export function useLogin() {
   const router = useRouter()
@@ -13,6 +10,7 @@ export function useLogin() {
   const [errorMsg, setErrorMsg] = useState("")
   const [isMobile, setIsMobile] = useState(false)
 
+  // 1. Logika Deteksi Perangkat (Mobile vs Desktop)
   useEffect(() => {
     const checkDevice = () => {
       const userAgent = navigator.userAgent.toLowerCase()
@@ -30,45 +28,50 @@ export function useLogin() {
     setErrorMsg("")
 
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      // 2. Kirim data ke API Internal (/api/login)
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       });
 
-      const result: ApiResponse<LoginData> = await response.json();
+      const result = await response.json();
 
-      if (!response.ok || result.status === 'fail') {
+      if (!response.ok || result.status !== 'success') {
         throw new Error(result.message || "Username atau Password salah.");
       }
 
-      const userData = result.data;
-      if (!userData) throw new Error("Data tidak valid.");
+      // Pastikan data tersedia
+      if (!result.data) throw new Error("Data tidak valid dari server.");
 
-      const { role, token } = userData;
+      // 3. Ambil Data dari Response Backend
+      // Struktur Data: { token, id_user, role, nama_lengkap, foto_url, ... }
+      const { role, nama_lengkap, foto_url, token } = result.data;
 
-      // --- LOGIKA PERANGKAT (REVISED & NOT REVERSED) ---
-      
-      // 1. Jika Role adalah Pelaksana, WAJIB Mobile
+      // 4. Validasi Kesesuaian Perangkat (Security Logic)
       if (role === 'Pelaksana') {
         if (!isMobile) {
           throw new Error("Login Pelaksana wajib menggunakan Aplikasi HP (Android/iOS).");
         }
       } 
-      // 2. Jika Role adalah Admin/Pemantau, WAJIB Desktop
       else if (role === 'Admin' || role === 'Pemantau') {
         if (isMobile) {
           throw new Error("Fitur Manajemen wajib dibuka lewat Laptop/PC.");
         }
       }
 
-      // Jika lolos validasi device, simpan session
-      document.cookie = `user_role=${role}; path=/; max-age=86400`;
-      document.cookie = `auth_token=${token}; path=/; max-age=86400`;
+      // 5. Simpan Session & Profil ke Cookies (Berlaku 24 Jam)
+      // Menggunakan token ASLI dari backend JWT
+      const cookieOptions = "path=/; max-age=86400; SameSite=Lax"; 
+      
+      document.cookie = `user_role=${role}; ${cookieOptions}`;
+      document.cookie = `auth_token=${token}; ${cookieOptions}`; // Token JWT Asli
+      document.cookie = `user_name=${nama_lengkap}; ${cookieOptions}`; // Nama Lengkap untuk UI
+      document.cookie = `user_photo=${foto_url || ''}; ${cookieOptions}`; // Foto Profil
 
-      // Redirect sesuai wilayah kerja
+      // 6. Redirect Sesuai Wilayah Kerja
       if (role === 'Pelaksana') {
-        router.push('/app/home');
+        router.push('/mobile');
       } else {
         router.push('/dashboard');
       }
@@ -80,5 +83,10 @@ export function useLogin() {
     }
   }
 
-  return { username, setUsername, password, setPassword, showPassword, setShowPassword, isLoading, errorMsg, handleLogin }
+  return { 
+    username, setUsername, 
+    password, setPassword, 
+    showPassword, setShowPassword, 
+    isLoading, errorMsg, handleLogin 
+  }
 }
