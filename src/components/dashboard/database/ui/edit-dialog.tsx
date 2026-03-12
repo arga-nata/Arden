@@ -105,7 +105,7 @@ export function GenericEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[450px] bg-[#0a0a0a] border-white/10 text-white">
+      <DialogContent className="sm:max-w-112.5 bg-[#0a0a0a] border-white/10 text-white">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription className="text-gray-400">{description}</DialogDescription>

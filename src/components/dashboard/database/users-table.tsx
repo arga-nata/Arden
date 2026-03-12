@@ -33,7 +33,7 @@ export function UsersDataTable({ data }: { data: User[] }) {
 
   useEffect(() => {
     // Fetch data "Who am I?"
-    fetch("/api/user/me", { cache: "no-store" })
+    fetch("/api/database/user/me", { cache: "no-store" })
       .then(res => res.json())
       .then(res => { 
         if (res.status === 'success') setCurrentUser(res.data) 
@@ -233,7 +233,7 @@ export function UsersDataTable({ data }: { data: User[] }) {
         open={openCreate} 
         onOpenChange={setOpenCreate}
         title="Register New User"
-        endpoint="/api/user"
+        endpoint="/api/database/user"
         fields={createFields}
       />
 
@@ -242,7 +242,7 @@ export function UsersDataTable({ data }: { data: User[] }) {
           open={!!editUser} 
           onOpenChange={(open) => !open && setEditUser(null)} 
           title="Edit User Data"
-          endpoint="/api/user" // Pastikan endpoint ini mengarah ke file yang punya method PATCH
+          endpoint="/api/database/user" // Pastikan endpoint ini mengarah ke file yang punya method PATCH
           initialData={editUser as unknown as Record<string, unknown>}
           idField="id_user"
           fields={editFields}
@@ -268,7 +268,7 @@ export function UsersDataTable({ data }: { data: User[] }) {
           // Tapi routemu pakai dynamic [id]. 
           // SOLUSI SEMENTARA: Kita ubah di delete-dialog.tsx agar support /api/user/[id]
           // ATAU, karena kita pakai Generic, kita set endpoint API khusus di bawah ini
-          endpoint="/api/user" 
+          endpoint="/api/database/user" 
           id={deleteUser.id_user}
         />
       )}

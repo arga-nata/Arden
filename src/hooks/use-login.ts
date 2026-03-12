@@ -1,3 +1,4 @@
+// src/hooks/use-login.ts
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -10,7 +11,7 @@ export function useLogin() {
   const [errorMsg, setErrorMsg] = useState("")
   const [isMobile, setIsMobile] = useState(false)
 
-  // 1. Logika Deteksi Perangkat (Mobile vs Desktop)
+  // 1. Deteksi Perangkat (Desktop vs Mobile)
   useEffect(() => {
     const checkDevice = () => {
       const userAgent = navigator.userAgent.toLowerCase()
@@ -28,56 +29,34 @@ export function useLogin() {
     setErrorMsg("")
 
     try {
-      // 2. Kirim data ke API Internal (/api/login)
-      const response = await fetch('/api/login', {
+      // 2. Tembak ke URL API Auth yang baru
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (!response.ok || result.status !== 'success') {
-        throw new Error(result.message || "Username atau Password salah.");
+        throw new Error(result.message || "Username atau Password salah.")
       }
 
-      // Pastikan data tersedia
-      if (!result.data) throw new Error("Data tidak valid dari server.");
+      const role = result.data.role
 
-      // 3. Ambil Data dari Response Backend
-      // Struktur Data: { token, id_user, role, nama_lengkap, foto_url, ... }
-      const { role, nama_lengkap, foto_url, token } = result.data;
-
-      // 4. Validasi Kesesuaian Perangkat (Security Logic)
-      if (role === 'Pelaksana') {
-        if (!isMobile) {
-          throw new Error("Login Pelaksana wajib menggunakan Aplikasi HP (Android/iOS).");
-        }
+      // 3. Validasi Keamanan Perangkat
+      if (role === 'Pelaksana' && !isMobile) {
+        throw new Error("Login Pelaksana wajib menggunakan Aplikasi HP.")
       } 
-      else if (role === 'Admin' || role === 'Pemantau') {
-        if (isMobile) {
-          throw new Error("Fitur Manajemen wajib dibuka lewat Laptop/PC.");
-        }
+      if ((role === 'Admin' || role === 'Pemantau') && isMobile) {
+        throw new Error("Fitur Manajemen wajib dibuka lewat Laptop/PC.")
       }
 
-      // 5. Simpan Session & Profil ke Cookies (Berlaku 24 Jam)
-      // Menggunakan token ASLI dari backend JWT
-      const cookieOptions = "path=/; max-age=86400; SameSite=Lax"; 
-      
-      document.cookie = `user_role=${role}; ${cookieOptions}`;
-      document.cookie = `auth_token=${token}; ${cookieOptions}`; // Token JWT Asli
-      document.cookie = `user_name=${nama_lengkap}; ${cookieOptions}`; // Nama Lengkap untuk UI
-      document.cookie = `user_photo=${foto_url || ''}; ${cookieOptions}`; // Foto Profil
-
-      // 6. Redirect Sesuai Wilayah Kerja
-      if (role === 'Pelaksana') {
-        router.push('/mobile');
-      } else {
-        router.push('/dashboard');
-      }
+      // 4. Redirect (Cookies sudah diurus Server!)
+      router.push(role === 'Pelaksana' ? '/mobile' : '/dashboard')
 
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : "Terjadi kesalahan sistem.");
+      setErrorMsg(err instanceof Error ? err.message : "Terjadi kesalahan sistem.")
     } finally {
       setIsLoading(false)
     }

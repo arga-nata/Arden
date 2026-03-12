@@ -31,7 +31,7 @@ export function ActivityLog({ logs }: { logs: ActivityLogItem[] }) {
       <CardHeader className="flex flex-row items-center justify-between py-4 px-5 border-b border-white/5 shrink-0 space-y-0">
         <CardTitle className="text-xs font-bold text-white/50 uppercase tracking-widest">Riwayat Presensi</CardTitle>
         <Select value={filter} onValueChange={setFilter}>
-          <SelectTrigger className="h-7 w-[95px] text-[10px] bg-white/5 border-white/10 text-white/80 outline-none px-2">
+          <SelectTrigger className="h-7 w-23.75 text-[10px] bg-white/5 border-white/10 text-white/80 outline-none px-2">
             <SelectValue placeholder="Waktu" />
           </SelectTrigger>
           <SelectContent className="bg-[#1a191f] border-white/10 text-white">
@@ -43,13 +43,13 @@ export function ActivityLog({ logs }: { logs: ActivityLogItem[] }) {
       </CardHeader>
 
       <CardContent className="p-0 flex-1 flex">
-        <ScrollArea className="flex-1 w-full h-[889px]"> 
+        <ScrollArea className="flex-1 w-full h-222.25"> 
           <div className="flex flex-col px-5 py-2">
             {filteredLogs.map((log) => (
               <div key={log.id} className="flex flex-wrap items-center justify-between py-4 border-b border-white/5 last:border-0 gap-3 group">
                 <div className="flex flex-col gap-1.5 min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] font-bold text-white/95 truncate max-w-[150px]">{log.studentName}</span>
+                    <span className="text-[14px] font-bold text-white/95 truncate max-w-37.5">{log.studentName}</span>
                     <span className="text-[10px] text-white/30 shrink-0">• {log.time}</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground truncate">

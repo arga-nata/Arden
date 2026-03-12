@@ -38,7 +38,7 @@ export function SiswiDataTable({ data }: { data: Siswi[] }) {
   useEffect(() => {
     async function fetchClasses() {
       try {
-        const res = await fetch('/api/class')
+        const res = await fetch('/api/database/class')
         const json = await res.json()
         if (json.status === 'success') {
           const options = json.data.map((cls: Class) => ({
@@ -214,7 +214,7 @@ export function SiswiDataTable({ data }: { data: Siswi[] }) {
         onImport={() => setOpenImport(true)} 
       />
 
-      <GenericCreateDialog open={openCreate} onOpenChange={setOpenCreate} title="Add New Student" endpoint="/api/siswi" fields={createFields} />
+      <GenericCreateDialog open={openCreate} onOpenChange={setOpenCreate} title="Add New Student" endpoint="/api/database/siswi" fields={createFields} />
 
       <ImportDialog open={openImport} onOpenChangeAction={setOpenImport} />
 
@@ -224,7 +224,7 @@ export function SiswiDataTable({ data }: { data: Siswi[] }) {
           onOpenChange={(open) => !open && setEditData(null)}
           title="Edit Student Data"
           description="Perbarui informasi profil, kelas, atau status akademik siswi."
-          endpoint="/api/siswi"
+          endpoint="/api/database/siswi"
           initialData={editData as unknown as Record<string, unknown>}
           idField="id_siswi"
           fields={editFields}
@@ -237,7 +237,7 @@ export function SiswiDataTable({ data }: { data: Siswi[] }) {
         onOpenChange={(open) => !open && setDeleteData(null)} 
         title="Delete Student" 
         description={<span>Are you sure? <b className="text-white">{deleteData.nama_lengkap}</b> will be deleted.</span>} 
-        endpoint="/api/siswi" 
+        endpoint="/api/database/siswi" 
         id={deleteData.id_siswi} 
         itemName={deleteData.nama_lengkap}
       />
