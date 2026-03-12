@@ -190,7 +190,7 @@ export function ImportDialog({
         payload = parseSqlToJson(sqlCode)
       }
 
-      const res = await fetch("/api/siswi/import", {
+      const res = await fetch("/api/database/siswi/import", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -279,7 +279,7 @@ export function ImportDialog({
                         </div>
                         
                         {/* 2. NAMA FILE (URUTAN PIRAMIDA: BESAR) */}
-                        <span className="text-sm font-semibold text-emerald-400 max-w-[250px] truncate">
+                        <span className="text-sm font-semibold text-emerald-400 max-w-62.5 truncate">
                           {file.name}
                         </span>
 
@@ -380,12 +380,12 @@ export function ImportDialog({
             )}
 
             {isSuccess ? (
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white min-w-[120px]" onClick={() => window.location.reload()}>
+              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white min-w-30" onClick={() => window.location.reload()}>
                 <Check className="w-4 h-4 mr-2" /> Selesai
               </Button>
             ) : (
               <Button
-                className="bg-indigo-600 hover:bg-indigo-700 text-white min-w-[120px]"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white min-w-30"
                 onClick={handleImport}
                 disabled={isImportDisabled}
               >

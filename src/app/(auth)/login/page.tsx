@@ -38,7 +38,7 @@ export default function LoginPage() {
       </div>
 
       {/* Konten Utama */}
-      <div className="relative z-10 w-full max-w-[750px] min-h-[450px] grid grid-cols-1 md:grid-cols-2 bg-[#0A0A0A]/90 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/5 animate-in fade-in zoom-in-95 duration-500">
+      <div className="relative z-10 w-full max-w-187.5 min-h-112.5 grid grid-cols-1 md:grid-cols-2 bg-[#0A0A0A]/90 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/5 animate-in fade-in zoom-in-95 duration-500">
 
         {/* --- BAGIAN KIRI (Banner) --- */}
         <div className="hidden md:flex relative flex-col justify-center p-8 bg-[#0f0f11]/50 overflow-hidden">
@@ -81,7 +81,7 @@ export default function LoginPage() {
             <Link href="/"><Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white rounded-full"><ArrowLeft className="w-4 h-4" /></Button></Link>
           </div>
 
-          <div className="w-full max-w-[280px] mx-auto space-y-6 relative z-10">
+          <div className="w-full max-w-70 mx-auto space-y-6 relative z-10">
             <div className="text-center md:text-left">
               <h3 className="text-xl font-bold text-white font-space tracking-tight">Login Portal</h3>
               <p className="text-gray-500 text-xs font-jakarta mt-1 font-medium">Authenticate to access the ecosystem.</p>

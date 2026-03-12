@@ -8,7 +8,7 @@ export function DashboardBanner() {
     // h-[149px] : Tinggi fix sesuai Figma
     // w-full    : Lebar fleksibel
     // relative  : Agar gambar di dalamnya bisa 'fill' container ini
-    <div className="relative w-full h-[120px] overflow-hidden rounded-xl shadow-sm">
+    <div className="relative w-full h-30 overflow-hidden rounded-xl shadow-sm">
       
       {/* 1. BACKGROUND IMAGE */}
       {/* Menggunakan Next.js Image agar optimasi performa bagus */}

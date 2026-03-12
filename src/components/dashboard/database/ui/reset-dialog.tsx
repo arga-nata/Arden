@@ -44,25 +44,32 @@ export function ResetPasswordDialog({
   const isValid = password.length >= 6 && password === confirm;
 
   async function handleReset() {
-    if (!isValid) return;
+  if (!isValid) return;
 
-    try {
-      setLoading(true)
-      // Simulasi API delay (Ganti dengan API call kamu nanti)
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+  try {
+    setLoading(true)
 
-      console.log("RESET:", { id: user.id_user, new_pass: password })
+    // PANGGIL API ASLI
+    const res = await fetch("/api/database/user/reset-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        id_user: user.id_user, 
+        new_password: password 
+      })
+    });
 
-      // 🔥 TOAST SPESIFIK
-      toast.success(`Password ${user.username} berhasil direset`)
+    const json = await res.json();
+    if (!res.ok || json.status === 'fail') throw new Error(json.message);
 
-      onOpenChange(false)
-    } catch {
-      toast.error("Gagal mereset password")
-    } finally {
-      setLoading(false)
-    }
+    toast.success(`Password ${user.username} berhasil direset`)
+    onOpenChange(false)
+  } catch (err: any) {
+    toast.error(err.message || "Gagal mereset password")
+  } finally {
+    setLoading(false)
   }
+}
 
   const inputClass = "bg-[#050505] border border-white/10 text-white placeholder:text-gray-600 shadow-none outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 focus:border-white/50 focus-visible:border-white/50 hover:border-white/30 transition-colors"
 

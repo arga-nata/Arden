@@ -70,7 +70,7 @@ export function GenericDeleteDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="bg-[#0a0a0a] border-white/10 text-white sm:max-w-[400px]">
+      <AlertDialogContent className="bg-[#0a0a0a] border-white/10 text-white sm:max-w-100">
         <AlertDialogHeader className="gap-2">
           <AlertDialogTitle className="flex items-center gap-2 text-white">
             <Trash2 className="w-4 h-4 text-red-500" />

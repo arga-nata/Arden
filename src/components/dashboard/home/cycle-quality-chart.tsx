@@ -52,12 +52,12 @@ export function CycleQualityChart({ data }: { data: CycleQualityItem[] }) {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex-1 pb-0 flex flex-col items-center justify-center min-h-[150px]">
+      <CardContent className="flex-1 pb-0 flex flex-col items-center justify-center min-h-37.5">
         {/* CHART CONTAINER: Dibuat lebih kecil & fleksibel */}
         <ChartContainer
           id="cycle-quality"
           config={chartConfig}
-          className="mx-auto aspect-square w-full max-w-[140px]"
+          className="mx-auto aspect-square w-full max-w-35"
         >
           <PieChart>
             <ChartTooltip

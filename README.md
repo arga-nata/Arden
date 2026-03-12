@@ -174,17 +174,48 @@ pastikan sistem Anda memenuhi persyaratan berikut:
 
 <hr>
 
-<h2>⚙️ Panduan Instalasi (Untuk Tim)</h2>
+<h2>⚙️ Panduan Instalasi</h2>
 
-<h3>1. Persiapan Awal</h3>
+<h3>1. Repositori</h3>
 
 <pre>
-<code>
-git clone https://github.com/username/arden.git
+git clone https://github.com/FirmanSyah2078/Arden.git
 cd arden
 pnpm install
-</code>
 </pre>
+
+<h3>2. konfigurasi .env.local</h3>
+
+<pre>
+- URL dari Supabase Settings > API
+NEXT_PUBLIC_SUPABASE_URL=
+
+- Kunci 'anon' dari Supabase Settings > API
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+- URL API Waktu Sholat
+NEXT_PUBLIC_API_TIME_SHOLAT=https://api.aladhan.com
+
+- Rahasia JWT dari Supabase Settings > API > JWT Settings
+JWT_SECRET=
+
+- URL Base aplikasi kita
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+
+- URL API Internal kita (Arahkan ke folder api yang kita buat tadi)
+NEXT_PUBLIC_API_URL=/api/auth/login
+
+- Ambil dari Supabase > Settings > API > service_role key)
+- Jangan pernah share key ini ke publik/frontend!
+SUPABASE_SERVICE_ROLE_KEY=
+</pre>
+
+<h3>3. Jalankan Server Pengembangan</h3>
+
+<pre>
+pnpm dev
+</pre>
+
 
 <hr>
 

@@ -166,7 +166,7 @@ export function ClassDataTable({ data }: { data: ClassWithMetrics[] }) {
         onOpenChange={setOpenCreate} 
         title="Buat Kelas Baru" 
         description="Pastikan format nama kelas baku (Contoh: X RPL 1)."
-        endpoint="/api/class" 
+        endpoint="/api/database/class" 
         fields={classFields} 
       />
 
@@ -176,7 +176,7 @@ export function ClassDataTable({ data }: { data: ClassWithMetrics[] }) {
           onOpenChange={(open) => !open && setEditData(null)} 
           title="Edit Data Kelas"
           description="Ubah nama atau wali kelas."
-          endpoint="/api/class" 
+          endpoint="/api/database/class" 
           initialData={editData as unknown as Record<string, unknown>} 
           idField="id_kelas" 
           fields={classFields} 
@@ -202,7 +202,7 @@ export function ClassDataTable({ data }: { data: ClassWithMetrics[] }) {
               </div>
             </div>
           } 
-          endpoint="/api/class" 
+          endpoint="/api/database/class" 
           itemName={deleteData.nama_kelas}
           id={deleteData.id_kelas || 0} 
         />
